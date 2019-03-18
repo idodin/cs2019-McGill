@@ -3,11 +3,13 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "start": "node ./build/app.js",
+        "start": "cross-env NODE_ENV=development node ./build/app.js",
+        "start-watch": "cross-env NODE_ENV=development nodemon",
         "build": "tsc && cpy src/log4js.json build/ && cpy frontend/**/* build/  --parents",
         "postinstall": "npm run build",
-        "test": "mocha -r ts-node/register src/**/*.spec.ts",
-        "start-watch": "cross-env NODE_ENV=development nodemon"
+        "test": "nyc mocha src/**/*.spec.ts",
+        "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+        "test:watch": "mocha -r ts-node/register src/**/*.spec.ts -w"
     },
     "author": "",
     "license": "ISC",
@@ -36,12 +38,31 @@
         "@types/request-promise": "^4.1.42",
         "@types/uuid": "^3.4.4",
         "chai": "^4.1.2",
+        "codecov": "^3.2.0",
         "cpy-cli": "^2.0.0",
         "cross-env": "^5.2.0",
         "mocha": "^5.2.0",
         "nodemon": "^1.18.10",
+        "nyc": "^13.3.0",
         "ts-node": "^7.0.1",
         "typemoq": "^2.1.0"
+    },
+    "nyc": {
+        "exclude": [
+            "src/**/*.spec.ts"
+        ],
+        "extension": [
+            ".ts"
+        ],
+        "require": [
+            "ts-node/register"
+        ],
+        "reporter": [
+            "text-summary",
+            "html"
+        ],
+        "sourceMap": true,
+        "instrument": true
     },
     "engines": {
         "node": "8.12.0"
