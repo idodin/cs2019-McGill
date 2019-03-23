@@ -83,7 +83,7 @@ export class Api {
 
         db.UserModel.findOne({email : email_in}, function (err, doc) {
             if(!doc) res.status(403).send({error: "Email is incorrect!"});
-            else if(doc.password === password_in){
+            else if(doc.passwordHash === password_in){
                 let accessToken = jwtify.jwtSign(email_in, password_in);
                 res.status(200).send({accessToken: accessToken});
             } else {
