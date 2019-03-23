@@ -78,10 +78,11 @@ export class Api {
 
         if(status===400){
             res.status(status).send({error: errorString.trim()});
+            return;
         }
 
         db.UserModel.findOne({email : email_in}, function (err, doc) {
-            if(!doc) res.status(403).send({error: "Email is incorrect!"})
+            if(!doc) res.status(403).send({error: "Email is incorrect!"});
             else if(doc.password === password_in){
                 let accessToken = jwtify.jwtSign(email_in, password_in);
                 res.status(200).send({accessToken: accessToken});
@@ -90,12 +91,35 @@ export class Api {
             }
 
         });
+    });
 
-
+	router.get('/articles', function(req,res){
+        db.ArticleModel.find({}, function (err, docs) {
+            res.status(200).send(docs);
+        })
 
     });
 
+        router.get('/articles/:articleid', function(req,res){
+            let articleID = req.param('articleid')
+            db.ArticleModel.find({id: articleID}, function (err, docs) {
+                if(!docs.length) res.status(404).send({error: "No Article with that ID!"});
+                else{
+                    res.status(200).send(docs);
+                }
+            })
+
+        });
+
+        router.get('articles/user/:user_id', function(req,res){
+            let userID = req.param('user_id');
+            db.ArticleModel.find({userId: userID}, function(err, docs){
+                res.status(200).send(docs);
+            })
+        });
+
         return router;
     }
+
 
 }
