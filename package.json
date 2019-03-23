@@ -17,6 +17,7 @@
         "chai-http": "^4.2.1",
         "dotenv": "^6.0.0",
         "express": "^4.16.3",
+        "jsonwebtoken": "^8.5.1",
         "mongodb": "^3.2.2",
         "mongoose": "^5.4.19",
         "pbkdf2": "^3.0.16",
