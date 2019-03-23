@@ -72,7 +72,7 @@ export class Api {
                 });
             }
         });
-        
+
     });
 
         return router;

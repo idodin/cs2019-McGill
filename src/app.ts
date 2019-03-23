@@ -13,7 +13,7 @@ else {
     console.log('Starting server in prod mode.');
 }
 
-const app = express();
+export const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -42,6 +42,8 @@ else {
 app.listen(process.env.PORT || 8080, () => {
     console.log(`Server started, listening on port ${process.env.PORT || 8080}.`);
 });
+
+export default app;
 
 function isDev() {
     return process.env.NODE_ENV === 'development';
